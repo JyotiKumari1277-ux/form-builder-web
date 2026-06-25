@@ -13,7 +13,7 @@ export default function RespondPage() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch(`http://localhost:3001/forms/${id}/public`)
+    fetch(`https://form-builder-api-87q4.onrender.com/forms/${id}/public`)
       .then(r => r.json())
       .then(data => { setForm(data); setLoading(false) })
       .catch(() => { setError('Form load nahi hua'); setLoading(false) })
@@ -21,7 +21,7 @@ export default function RespondPage() {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch(`http://localhost:3001/responses/${id}`, {
+      const res = await fetch(`https://form-builder-api-87q4.onrender.com/responses/${id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answers }),

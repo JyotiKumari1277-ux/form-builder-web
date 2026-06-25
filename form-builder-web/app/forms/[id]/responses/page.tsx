@@ -16,8 +16,8 @@ export default function ResponsesPage() {
     if (!token) { router.push('/login'); return }
 
     Promise.all([
-      fetch(`http://localhost:3001/forms/${id}/public`).then(r => r.json()),
-      fetch(`http://localhost:3001/responses/${id}`, {
+      fetch(`https://form-builder-api-87q4.onrender.com/forms/${id}/public`).then(r => r.json()),
+      fetch(`https://form-builder-api-87q4.onrender.com/responses/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(r => r.json())
     ]).then(([formData, responsesData]) => {

@@ -25,7 +25,7 @@ export default function BuildPage() {
   useEffect(() => {
     const token = localStorage.getItem('token')
     if (!token) { router.push('/login'); return }
-    fetch(`http://localhost:3001/forms/${id}`, {
+    fetch(`https://form-builder-api-87q4.onrender.com/forms/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(r => r.json()).then(data => {
       setTitle(data.title || 'Untitled Form')
@@ -56,7 +56,7 @@ export default function BuildPage() {
     const token = localStorage.getItem('token')
     setError('')
     try {
-      const res = await fetch(`http://localhost:3001/forms/${id}`, {
+      const res = await fetch(`https://form-builder-api-87q4.onrender.com/forms/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ title, fields }),

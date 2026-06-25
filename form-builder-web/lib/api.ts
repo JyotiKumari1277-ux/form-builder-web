@@ -1,4 +1,4 @@
-const API = 'http://localhost:3001'
+const API = 'https://form-builder-api-87q4.onrender.com'
 
 export const getToken = () => localStorage.getItem('token')
 
