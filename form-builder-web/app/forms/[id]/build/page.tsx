@@ -1,5 +1,5 @@
 'use client'
-import QRCode from 'qrcode.react'
+import { QRCodeCanvas } from 'qrcode.react'ode.react'ode.react'ode.react'
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 
@@ -241,7 +241,7 @@ const removeField = async (fieldId: string) => {
             </button>
             <div className="mt-4 flex flex-col items-center">
   <p className="text-xs text-gray-400 mb-2">Form ka QR Code:</p>
-  <QRCode
+  <QRCodeCanvas
     value={`${window.location.origin}/forms/${id}/respond`}
     size={120}
     bgColor="#ffffff"
