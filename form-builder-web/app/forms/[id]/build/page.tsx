@@ -51,11 +51,17 @@ export default function BuildPage() {
   const updateField = (fieldId: string, key: string, value: any) => {
     setFields(fields.map(f => f.id === fieldId ? { ...f, [key]: value } : f))
   }
-
-  const removeField = (fieldId: string) => {
-    setFields(fields.filter(f => f.id !== fieldId))
-  }
-
+const removeField = async (fieldId: string) => {
+  const updatedFields = fields.filter(f => f.id !== fieldId)
+  setFields(updatedFields)
+  
+  const token = localStorage.getItem('token')
+  await fetch(`https://form-builder-api-87q4.onrender.com/forms/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ title, fields: updatedFields }),
+  })
+}
   const handleSave = async () => {
     const token = localStorage.getItem('token')
     setError('')
