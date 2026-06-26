@@ -1,5 +1,5 @@
 'use client'
-
+import QRCode from 'qrcode.react'
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 
@@ -239,6 +239,17 @@ const removeField = async (fieldId: string) => {
             >
               📊 Responses
             </button>
+            <div className="mt-4 flex flex-col items-center">
+  <p className="text-xs text-gray-400 mb-2">Form ka QR Code:</p>
+  <QRCode
+    value={`${window.location.origin}/forms/${id}/respond`}
+    size={120}
+    bgColor="#ffffff"
+    fgColor="#4f46e5"
+    level="H"
+  />
+  <p className="text-xs text-gray-400 mt-2">Scan karke form fill karo</p>
+</div>
           </div>
         </div>
       </div>
