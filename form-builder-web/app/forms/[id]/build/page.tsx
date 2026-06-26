@@ -117,7 +117,7 @@ export default function BuildPage() {
         <div className="grid grid-cols-3 gap-6">
           {/* Left Panel - Field Types */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-            <h3 className="font-bold text-gray-500 mb-4 text-xs uppercase tracking-widest">Add Fields</h3>
+            <h3 className="font-bold text-gray-500 mb-4 text-sm font-black uppercase tracking-widest text-gray-700">Add Fields</h3>
             <div className="space-y-2">
               {FIELD_TYPES.map(ft => (
                 <button
@@ -133,7 +133,7 @@ export default function BuildPage() {
 
           {/* Right Panel - Canvas */}
           <div className="col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-            <h3 className="font-bold text-gray-500 mb-4 text-xs uppercase tracking-widest">Form Preview</h3>
+            <h3 className="font-bold text-gray-500 mb-4 text-sm font-black uppercase tracking-widest text-gray-700">Form Preview</h3>
             {fields.length === 0 ? (
               <div className="text-center py-20 text-gray-300">
                 <div className="text-6xl mb-3">📋</div>
@@ -201,7 +201,7 @@ export default function BuildPage() {
 
         {/* Share Link Section */}
         <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-          <h3 className="font-bold text-gray-500 mb-3 text-xs uppercase tracking-widest">🔗 Share Link</h3>
+          <h3 className="font-bold text-gray-500 mb-3 text-sm font-black uppercase tracking-widest text-gray-700">🔗 Share Link</h3>
           <div className="flex gap-3 items-center">
             <input
               readOnly
