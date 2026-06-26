@@ -88,12 +88,15 @@ export default function RespondPage() {
             </div>
           ))}
         </div>
-        <button
-          onClick={handleSubmit}
-          className="w-full mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition"
-        >
-          Submit Response
-        </button>
+<button
+  onClick={(e) => {
+    e.currentTarget.disabled = true;
+    handleSubmit();
+  }}
+  className="w-full mt-8 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition"
+>
+  Submit Response
+</button>
       </div>
     </div>
   )
