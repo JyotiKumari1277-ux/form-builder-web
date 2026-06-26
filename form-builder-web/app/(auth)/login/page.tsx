@@ -32,9 +32,12 @@ export default function LoginPage() {
         body: JSON.stringify(data),
       })
       const json = await res.json()
-      if (!res.ok) throw new Error(json.message || 'Login failed')
-      localStorage.setItem('token', json.accessToken)
-      router.push('/dashboard')
+    if (!res.ok) throw new Error(json.message || 'Login failed')
+    
+    // Yahan ye line add karni hai:
+    localStorage.setItem('token', json.accessToken); 
+    
+    router.push('/dashboard')
     } catch (err: any) {
       setError(err.message)
     } finally {

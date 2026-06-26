@@ -24,17 +24,38 @@ export default function BuildPage() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) { router.push('/login'); return }
-    fetch(`https://form-builder-api-87q4.onrender.com/forms/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(r => r.json())
-      .then(data => {
-        setTitle(data.title || 'Untitled Form')
-        setFields(data.fields || [])
-      })
-  }, [id])
+    const fetchData = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/login');
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://form-builder-api-87q4.onrender.com/forms/${id}`, {
+          headers: { 
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json' 
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Database se aaya data:", data); // Poora data check karte hain
+        setTitle(data.title || 'Untitled Form');
+        setFields(data.fields || []);
+      } catch (error) {
+        console.error("Form load karne mein error:", error);
+      }
+    };
+
+    if (id) {
+      fetchData();
+    }
+  }, [id, router]);
 
   const addField = (type: string) => {
     const newField: any = {
@@ -54,13 +75,6 @@ export default function BuildPage() {
 const removeField = async (fieldId: string) => {
   const updatedFields = fields.filter(f => f.id !== fieldId)
   setFields(updatedFields)
-  
-  const token = localStorage.getItem('token')
-  await fetch(`https://form-builder-api-87q4.onrender.com/forms/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-    body: JSON.stringify({ title, fields: updatedFields }),
-  })
 }
   const handleSave = async () => {
     const token = localStorage.getItem('token')
