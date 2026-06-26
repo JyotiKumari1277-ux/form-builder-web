@@ -25,33 +25,53 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
-        {error && <p className="text-red-500 mb-4 text-sm">{error}</p>}
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 flex items-center justify-center px-4">
+      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-indigo-500 to-cyan-500 rounded-xl mb-4 shadow-lg">
+            <span className="text-white text-2xl font-bold">F</span>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
+          <p className="text-gray-500 text-sm mt-1">Login to continue building forms</p>
+        </div>
+
+        {error && (
+          <p className="text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2 mb-4 text-sm text-center">
+            {error}
+          </p>
+        )}
+
+        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
         <input
           type="email"
-          placeholder="Email"
+          placeholder="you@example.com"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="w-full border p-3 rounded-lg mb-3"
+          className="w-full px-4 py-3 mb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition duration-200 outline-none"
         />
+
+        <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
         <input
           type="password"
-          placeholder="Password"
+          placeholder="••••••••"
           value={password}
           onChange={e => setPassword(e.target.value)}
-          className="w-full border p-3 rounded-lg mb-4"
+          className="w-full px-4 py-3 mb-6 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition duration-200 outline-none"
         />
+
         <button
           onClick={handleLogin}
           disabled={loading}
-          className="w-full bg-teal-600 text-white p-3 rounded-lg font-semibold hover:bg-teal-700"
+          className="w-full bg-gradient-to-r from-indigo-600 to-cyan-600 text-white py-3 rounded-lg font-semibold hover:opacity-90 active:scale-95 transition-all shadow-md"
         >
-          {loading ? 'Loading...' : 'Login'}
+          {loading ? 'Logging in...' : 'Login'}
         </button>
-        <p className="text-center mt-4 text-sm">
-          Account nahi hai? <Link href="/register" className="text-teal-600 font-semibold">Register</Link>
+
+        <p className="text-center mt-6 text-sm text-gray-500">
+          Account nahi hai?{' '}
+          <Link href="/register" className="text-indigo-600 font-semibold hover:text-indigo-700">
+            Register
+          </Link>
         </p>
       </div>
     </div>
