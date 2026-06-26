@@ -1,5 +1,5 @@
 'use client'
-import { QRCodeCanvas } from 'qrcode.react'ode.react'ode.react'ode.react'
+import { QRCodeCanvas } from 'qrcode.react';
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 
