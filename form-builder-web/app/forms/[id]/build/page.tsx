@@ -101,7 +101,7 @@ const removeField = async (fieldId: string) => {
           </button>
           <button
             onClick={() => router.push('/dashboard')}
-            className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 font-medium transition-all"
+            className="px-6 py-2.5 bg-gray-200 text-gray-800 font-bold rounded-xl hover:bg-gray-300 transition"
           >
             ← Back
           </button>
