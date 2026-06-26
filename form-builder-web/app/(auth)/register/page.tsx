@@ -1,87 +1,119 @@
 'use client'
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { api } from '@/lib/api'
-import Link from 'next/link'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+
+const registerSchema = z.object({
+  name: z.string().min(2, 'Naam 2 characters ka hona chahiye'),
+  email: z.string().email('Valid email daalo'),
+  password: z.string().min(6, 'Password 6 characters ka hona chahiye'),
+})
+
+type RegisterForm = z.infer<typeof registerSchema>
 
 export default function RegisterPage() {
   const router = useRouter()
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleRegister = async () => {
+  const { register, handleSubmit, formState: { errors } } = useForm<RegisterForm>({
+    resolver: zodResolver(registerSchema),
+  })
+
+  const onSubmit = async (data: RegisterForm) => {
     setLoading(true)
     setError('')
-    const res = await api.register({ name, email, password })
-    if (res.message) {
+    try {
+      const res = await fetch('https://form-builder-api-87q4.onrender.com/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.message || 'Registration failed')
       router.push('/login')
-    } else {
-      setError('Registration failed, try again')
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+      <div className="w-full max-w-md">
+        {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-indigo-500 to-cyan-500 rounded-xl mb-4 shadow-lg">
-            <span className="text-white text-2xl font-bold">F</span>
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-indigo-600 rounded-2xl mb-4 shadow-lg">
+            <span className="text-2xl">📋</span>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Create account</h1>
-          <p className="text-gray-500 text-sm mt-1">Start building your forms today</p>
+          <h1 className="text-3xl font-black text-gray-800">FormBuilder</h1>
+          <p className="text-gray-400 mt-1">Create your account</p>
         </div>
 
-        {error && (
-          <p className="text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-2 mb-4 text-sm text-center">
-            {error}
+        {/* Card */}
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+          <h2 className="text-xl font-bold text-gray-700 mb-6">Get started for free</h2>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-600 mb-1.5">Full Name</label>
+              <input
+                type="text"
+                placeholder="Aapka naam"
+                {...register('name')}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all text-sm"
+              />
+              {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-600 mb-1.5">Email</label>
+              <input
+                type="email"
+                placeholder="you@example.com"
+                {...register('email')}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all text-sm"
+              />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-600 mb-1.5">Password</label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                {...register('password')}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all text-sm"
+              />
+              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+            </div>
+
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all mt-2"
+            >
+              {loading ? '⏳ Creating account...' : 'Create Account →'}
+            </button>
+          </form>
+
+          <p className="text-center text-sm text-gray-400 mt-6">
+            Pehle se account hai?{' '}
+            <a href="/login" className="text-indigo-600 font-semibold hover:underline">
+              Login karo
+            </a>
           </p>
-        )}
-
-        <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-        <input
-          type="text"
-          placeholder="Your name"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          className="w-full px-4 py-3 mb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition duration-200 outline-none"
-        />
-
-        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-        <input
-          type="email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          className="w-full px-4 py-3 mb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition duration-200 outline-none"
-        />
-
-        <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-        <input
-          type="password"
-          placeholder="••••••••"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          className="w-full px-4 py-3 mb-6 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition duration-200 outline-none"
-        />
-
-        <button
-          onClick={handleRegister}
-          disabled={loading}
-          className="w-full bg-gradient-to-r from-indigo-600 to-cyan-600 text-white py-3 rounded-lg font-semibold hover:opacity-90 active:scale-95 transition-all shadow-md"
-        >
-          {loading ? 'Creating...' : 'Register'}
-        </button>
-
-        <p className="text-center mt-6 text-sm text-gray-500">
-          Pehle se account hai?{' '}
-          <Link href="/login" className="text-indigo-600 font-semibold hover:text-indigo-700">
-            Login
-          </Link>
-        </p>
+        </div>
       </div>
     </div>
   )
