@@ -105,6 +105,16 @@ const removeField = async (fieldId: string) => {
           >
             ← Back
           </button>
+          <button
+  onClick={() => {
+    const publishUrl = window.location.href.replace('/build', '/respond');
+    navigator.clipboard.writeText(publishUrl);
+    alert("Form published! Link copied.");
+  }}
+  className="px-6 py-2.5 bg-green-600 text-white rounded-xl hover:bg-green-700 transition"
+>
+  Publish
+</button>
         </div>
       </div>
 
